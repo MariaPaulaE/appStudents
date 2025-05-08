@@ -1,38 +1,52 @@
 package com.example.appStudents.service;
 
+import com.example.appStudents.model.Estudiante;
 import com.example.appStudents.model.Maestro;
+import com.example.appStudents.repository.EstudianteRepository;
 import com.example.appStudents.repository.MaestroRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class MaestroService {
 
-    private final MaestroRepository repository;
+    @Autowired
+    private MaestroRepository maestroRepository;
 
-    public MaestroService(MaestroRepository repository) {
-        this.repository = repository;
+    public MaestroService(MaestroRepository maestroRepository){
+        this.maestroRepository = maestroRepository;
     }
 
-    // Guarda un nuevo maestro en la base de datos
-    public Maestro guardar(Maestro maestro) {
-        return repository.save(maestro);
+    //Guardar maestro
+    public Maestro saveMaestro (Maestro maestro){
+        return maestroRepository.save(maestro);
     }
 
-    // Elimina un maestro por su ID
-    public void eliminar(Long id) {
-        repository.deleteById(id);
+    //Listar maestro
+    public List<Maestro> getAllMaestros(){
+        return maestroRepository.findAll();
     }
 
-    // Devuelve la lista de todos los maestros
-    public List<Maestro> listar() {
-        return repository.findAll();
+    // Obtener maestro por id
+    public Optional<Maestro> getMaestroId(Long id){
+        return maestroRepository.findById(id);
     }
 
-    // Busca y devuelve un maestro por su ID
-    public Maestro obtenerPorId(Long id) {
-        return repository.findById(id).orElse(null);
+    // Actualizar maestro
+    public Maestro updateMaestro(Long id, Maestro maestro){
+        if (maestroRepository.existsById(id)){
+            maestro.setId(id);
+            return maestroRepository.save(maestro);
+        }
+        return null;
+    }
+
+    //Borrar maestro con id
+    public void deleteMaestro(Long id){
+        maestroRepository.deleteById(id);
     }
 }
 

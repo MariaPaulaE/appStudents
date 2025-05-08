@@ -1,6 +1,7 @@
 package com.example.appStudents.controller;
 
 import com.example.appStudents.model.Estudiante;
+import com.example.appStudents.model.Maestro;
 import com.example.appStudents.service.EstudianteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -10,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/estudiantes")
+@RequestMapping("/estudiante")
 public class EstudianteController {
 
     @Autowired
@@ -19,6 +20,11 @@ public class EstudianteController {
     @PostMapping
     public Estudiante addEstudiante(@RequestBody Estudiante estudiante){
         return estudianteService.saveEstudiante(estudiante);
+    }
+
+    @GetMapping
+    public List<Estudiante> getEstudianteAll(){
+        return estudianteService.getAllEstudiantes();
     }
 
     @GetMapping("/{id}")

@@ -51,18 +51,6 @@ public class Maestro {
         this.materia = materia;
     }
 
-    //    // Getters y Setters
-//    public Long getId() { return id; }
-//    public void setId(Long id) { this.id = id; }
-//
-//    public String getNombre() { return nombre; }
-//    public void setNombre(String nombre) { this.nombre = nombre; }
-//
-//    public String getMateria() { return materia; }
-//    public void setMateria(String materia) { this.materia = materia; }
-//
-//    public List<Estudiante> getEstudiantes() { return estudiantes; }
-//    public void setEstudiantes(List<Estudiante> estudiantes) { this.estudiantes = estudiantes; }
 }
 
 
