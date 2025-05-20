@@ -1,53 +1,49 @@
 package com.example.appStudents.service;
 
-import com.example.appStudents.model.Estudiante;
 import com.example.appStudents.model.Maestro;
-import com.example.appStudents.repository.EstudianteRepository;
 import com.example.appStudents.repository.MaestroRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class MaestroService {
 
-    @Autowired
-    private MaestroRepository maestroRepository;
+    private final MaestroRepository maestroRepository;
 
-    public MaestroService(MaestroRepository maestroRepository){
+    public MaestroService(MaestroRepository maestroRepository) {
         this.maestroRepository = maestroRepository;
     }
 
-    //Guardar maestro
-    public Maestro saveMaestro (Maestro maestro){
+    //Guardar un nuevo maestro
+    public Maestro guardarMaestro(Maestro maestro) {
         return maestroRepository.save(maestro);
     }
 
-    //Listar maestro
-    public List<Maestro> getAllMaestros(){
+    //Obtener todos los maestros
+    public List<Maestro> obtenerTodosMaestros() {
         return maestroRepository.findAll();
     }
 
-    // Obtener maestro por id
-    public Optional<Maestro> getMaestroId(Long id){
-        return maestroRepository.findById(id);
+    //Obtener un maestro por ID
+    public Maestro obtenerEntidadPorId(Long id) {
+        return maestroRepository.findById(id).orElse(null);
     }
 
-    // Actualizar maestro
-    public Maestro updateMaestro(Long id, Maestro maestro){
-        if (maestroRepository.existsById(id)){
-            maestro.setId(id);
-            return maestroRepository.save(maestro);
-        }
-        return null;
+    //Actualizar un maestro existente
+    public Maestro actualizarMaestro(Maestro maestro) {
+        return maestroRepository.save(maestro); // Spring lo actualiza si el ID ya existe
     }
 
-    //Borrar maestro con id
-    public void deleteMaestro(Long id){
+    //Eliminar un maestro por ID
+    public void eliminarMaestro(Long id) {
         maestroRepository.deleteById(id);
     }
 }
+
+
+
+
+
 
 
