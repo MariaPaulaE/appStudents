@@ -1,26 +1,51 @@
 package com.example.appStudents.dto;
 
+// DTO para la entidad Asignatura
 public class AsignaturaDTO {
 
     private Long id;
     private String nombre;
-    private Long maestroId;  // ID del maestro asignado
-    private Long grupoId;    // ID del grupo asignado
+
+    // ID del profesor que imparte la asignatura
+    private Long profesorId;
+
+    // ID del curso al que pertenece la asignatura
+    private Long cursoId;
 
     public AsignaturaDTO() {}
 
-    //Getters y setters
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+    public Long getId() {
+        return id;
+    }
 
-    public String getNombre() { return nombre; }
-    public void setNombre(String nombre) { this.nombre = nombre; }
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-    public Long getMaestroId() { return maestroId; }
-    public void setMaestroId(Long maestroId) { this.maestroId = maestroId; }
+    public String getNombre() {
+        return nombre;
+    }
 
-    public Long getGrupoId() { return grupoId; }
-    public void setGrupoId(Long grupoId) { this.grupoId = grupoId; }
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public Long getProfesorId() {
+        return profesorId;
+    }
+
+    public void setProfesorId(Long profesorId) {
+        this.profesorId = profesorId;
+    }
+
+    public Long getCursoId() {
+        return cursoId;
+    }
+
+    public void setCursoId(Long cursoId) {
+        this.cursoId = cursoId;
+    }
 }
+
 
 

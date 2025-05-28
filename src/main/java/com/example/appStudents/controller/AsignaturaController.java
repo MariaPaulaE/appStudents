@@ -19,77 +19,65 @@ public class AsignaturaController {
         this.asignaturaService = asignaturaService;
     }
 
-    //Crear nueva asignatura
+    // Crear una nueva asignatura
     @PostMapping
-    public ResponseEntity<AsignaturaDTO> addAsignatura(@RequestBody AsignaturaDTO dto) {
-        Asignatura asignatura = asignaturaService.saveAsignatura(dto);
-        return ResponseEntity.ok(convertToDTO(asignatura));
+    public ResponseEntity<AsignaturaDTO> crear(@RequestBody AsignaturaDTO dto) {
+        Asignatura nueva = asignaturaService.guardarAsignatura(dto);
+        return ResponseEntity.ok(convertToDTO(nueva));
     }
 
-    //Obtener todas las asignaturas
+    // Obtener todas las asignaturas
     @GetMapping
-    public ResponseEntity<List<AsignaturaDTO>> getAllAsignaturas() {
-        List<Asignatura> asignaturas = asignaturaService.getAllAsignaturas();
+    public ResponseEntity<List<AsignaturaDTO>> listar() {
+        List<Asignatura> lista = asignaturaService.obtenerTodas();
         List<AsignaturaDTO> dtos = new ArrayList<>();
 
-        for (Asignatura asignatura : asignaturas) {
-            AsignaturaDTO dto = convertToDTO(asignatura);
-            dtos.add(dto);
+        for (Asignatura asignatura : lista) {
+            dtos.add(convertToDTO(asignatura));
         }
 
         return ResponseEntity.ok(dtos);
     }
 
-    //Obtener asignatura por ID
+    // Obtener una asignatura por su ID
     @GetMapping("/{id}")
-    public ResponseEntity<AsignaturaDTO> getAsignaturaById(@PathVariable Long id) {
-        Asignatura asignatura = asignaturaService.getAsignaturaById(id);
-
-        if (asignatura != null) {
-            AsignaturaDTO dto = convertToDTO(asignatura);
-            return ResponseEntity.ok(dto);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+    public ResponseEntity<AsignaturaDTO> obtenerPorId(@PathVariable Long id) {
+        Asignatura asignatura = asignaturaService.obtenerPorId(id);
+        return asignatura != null ? ResponseEntity.ok(convertToDTO(asignatura)) : ResponseEntity.notFound().build();
     }
 
-    //Actualizar asignatura
+    // Actualizar una asignatura existente
     @PutMapping("/{id}")
-    public ResponseEntity<AsignaturaDTO> updateAsignatura(@PathVariable Long id, @RequestBody AsignaturaDTO dto) {
-        Asignatura updated = asignaturaService.updateAsignatura(id, dto);
-
-        if (updated != null) {
-            AsignaturaDTO actualizado = convertToDTO(updated);
-            return ResponseEntity.ok(actualizado);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+    public ResponseEntity<AsignaturaDTO> actualizar(@PathVariable Long id, @RequestBody AsignaturaDTO dto) {
+        Asignatura actualizada = asignaturaService.actualizar(id, dto);
+        return actualizada != null ? ResponseEntity.ok(convertToDTO(actualizada)) : ResponseEntity.notFound().build();
     }
 
-    //Eliminar asignatura
+    // Eliminar una asignatura por su ID
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteAsignatura(@PathVariable Long id) {
-        asignaturaService.deleteAsignatura(id);
+    public ResponseEntity<Void> eliminar(@PathVariable Long id) {
+        asignaturaService.eliminar(id);
         return ResponseEntity.noContent().build();
     }
 
-    //Método auxiliar para convertir Asignatura a DTO
+    // Convertir una entidad Asignatura a DTO
     private AsignaturaDTO convertToDTO(Asignatura asignatura) {
         AsignaturaDTO dto = new AsignaturaDTO();
         dto.setId(asignatura.getId());
         dto.setNombre(asignatura.getNombre());
 
-        if (asignatura.getMaestro() != null) {
-            dto.setMaestroId(asignatura.getMaestro().getId());
+        if (asignatura.getProfesor() != null) {
+            dto.setProfesorId(asignatura.getProfesor().getId());
         }
 
-        if (asignatura.getGrupo() != null) {
-            dto.setGrupoId(asignatura.getGrupo().getId());
+        if (asignatura.getCurso() != null) {
+            dto.setCursoId(asignatura.getCurso().getId());
         }
 
         return dto;
     }
 }
+
 
 
 

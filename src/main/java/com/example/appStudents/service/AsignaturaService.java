@@ -2,11 +2,11 @@ package com.example.appStudents.service;
 
 import com.example.appStudents.dto.AsignaturaDTO;
 import com.example.appStudents.model.Asignatura;
-import com.example.appStudents.model.Grupo;
-import com.example.appStudents.model.Maestro;
+import com.example.appStudents.model.Curso;
+import com.example.appStudents.model.Profesores;
 import com.example.appStudents.repository.AsignaturaRepository;
-import com.example.appStudents.repository.GrupoRepository;
-import com.example.appStudents.repository.MaestroRepository;
+import com.example.appStudents.repository.CursoRepository;
+import com.example.appStudents.repository.ProfesoresRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,59 +15,70 @@ import java.util.List;
 public class AsignaturaService {
 
     private final AsignaturaRepository asignaturaRepository;
-    private final MaestroRepository maestroRepository;
-    private final GrupoRepository grupoRepository;
+    private final ProfesoresRepository profesoresRepository;
+    private final CursoRepository cursoRepository;
 
     public AsignaturaService(AsignaturaRepository asignaturaRepository,
-                             MaestroRepository maestroRepository,
-                             GrupoRepository grupoRepository) {
+                             ProfesoresRepository profesoresRepository,
+                             CursoRepository cursoRepository) {
         this.asignaturaRepository = asignaturaRepository;
-        this.maestroRepository = maestroRepository;
-        this.grupoRepository = grupoRepository;
+        this.profesoresRepository = profesoresRepository;
+        this.cursoRepository = cursoRepository;
     }
 
-    //Crear o actualizar asignatura
-    public Asignatura saveAsignatura(AsignaturaDTO dto) {
+    // Guardar una nueva asignatura desde un DTO
+    public Asignatura guardarAsignatura(AsignaturaDTO dto) {
         Asignatura asignatura = new Asignatura();
         asignatura.setNombre(dto.getNombre());
 
-        // Relacionar con maestro si existe
-        Maestro maestro = maestroRepository.findById(dto.getMaestroId()).orElse(null);
-        asignatura.setMaestro(maestro);
+        if (dto.getProfesorId() != null) {
+            Profesores profesor = profesoresRepository.findById(dto.getProfesorId()).orElse(null);
+            asignatura.setProfesor(profesor);
+        }
 
-        // Relacionar con grupo si existe
-        Grupo grupo = grupoRepository.findById(dto.getGrupoId()).orElse(null);
-        asignatura.setGrupo(grupo);
+        if (dto.getCursoId() != null) {
+            Curso curso = cursoRepository.findById(dto.getCursoId()).orElse(null);
+            asignatura.setCurso(curso);
+        }
 
         return asignaturaRepository.save(asignatura);
     }
 
-    public Asignatura getAsignaturaById(Long id) {
-        return asignaturaRepository.findById(id).orElse(null);
-    }
-
-    public List<Asignatura> getAllAsignaturas() {
+    // Obtener todas las asignaturas
+    public List<Asignatura> obtenerTodas() {
         return asignaturaRepository.findAll();
     }
 
-    public Asignatura updateAsignatura(Long id, AsignaturaDTO dto) {
+    // Obtener asignatura por ID
+    public Asignatura obtenerPorId(Long id) {
+        return asignaturaRepository.findById(id).orElse(null);
+    }
+
+    // Actualizar una asignatura existente
+    public Asignatura actualizar(Long id, AsignaturaDTO dto) {
         return asignaturaRepository.findById(id).map(asignatura -> {
             asignatura.setNombre(dto.getNombre());
 
-            Maestro maestro = maestroRepository.findById(dto.getMaestroId()).orElse(null);
-            asignatura.setMaestro(maestro);
+            if (dto.getProfesorId() != null) {
+                Profesores profesor = profesoresRepository.findById(dto.getProfesorId()).orElse(null);
+                asignatura.setProfesor(profesor);
+            }
 
-            Grupo grupo = grupoRepository.findById(dto.getGrupoId()).orElse(null);
-            asignatura.setGrupo(grupo);
+            if (dto.getCursoId() != null) {
+                Curso curso = cursoRepository.findById(dto.getCursoId()).orElse(null);
+                asignatura.setCurso(curso);
+            }
 
             return asignaturaRepository.save(asignatura);
         }).orElse(null);
     }
 
-    public void deleteAsignatura(Long id) {
+    // Eliminar una asignatura por ID
+    public void eliminar(Long id) {
         asignaturaRepository.deleteById(id);
     }
 }
+
 
 
 

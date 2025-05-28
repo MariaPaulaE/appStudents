@@ -10,43 +10,63 @@ public class Asistencia {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private LocalDate fecha;
-    private boolean presente;
-
-    // Relación con Estudiante (muchas asistencias pueden ser de un estudiante)
+    // Relación con la entidad Estudiantes
     @ManyToOne
     @JoinColumn(name = "estudiante_id")
-    private Estudiante estudiante;
+    private Estudiantes estudiante;
 
-    // Relación con Asignatura
+    // Relación con la entidad Asignatura
     @ManyToOne
     @JoinColumn(name = "asignatura_id")
     private Asignatura asignatura;
 
+    // Fecha de la asistencia
+    private LocalDate fecha;
+
+    // Estado de asistencia: true (presente), false (ausente)
+    private Boolean estado;
+
     public Asistencia() {}
 
-    public Asistencia(LocalDate fecha, boolean presente, Estudiante estudiante, Asignatura asignatura) {
-        this.fecha = fecha;
-        this.presente = presente;
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Estudiantes getEstudiante() {
+        return estudiante;
+    }
+
+    public void setEstudiante(Estudiantes estudiante) {
         this.estudiante = estudiante;
+    }
+
+    public Asignatura getAsignatura() {
+        return asignatura;
+    }
+
+    public void setAsignatura(Asignatura asignatura) {
         this.asignatura = asignatura;
     }
 
-    //Getters y Setters
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+    public LocalDate getFecha() {
+        return fecha;
+    }
 
-    public LocalDate getFecha() { return fecha; }
-    public void setFecha(LocalDate fecha) { this.fecha = fecha; }
+    public void setFecha(LocalDate fecha) {
+        this.fecha = fecha;
+    }
 
-    public boolean isPresente() { return presente; }
-    public void setPresente(boolean presente) { this.presente = presente; }
+    public Boolean getEstado() {
+        return estado;
+    }
 
-    public Estudiante getEstudiante() { return estudiante; }
-    public void setEstudiante(Estudiante estudiante) { this.estudiante = estudiante; }
-
-    public Asignatura getAsignatura() { return asignatura; }
-    public void setAsignatura(Asignatura asignatura) { this.asignatura = asignatura; }
+    public void setEstado(Boolean estado) {
+        this.estado = estado;
+    }
 }
 
 

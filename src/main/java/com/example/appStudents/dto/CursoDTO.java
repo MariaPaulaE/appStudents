@@ -1,14 +1,11 @@
 package com.example.appStudents.dto;
 
-public class GrupoDTO {
+public class CursoDTO {
 
-    private Long id;       // ID del grupo
-    private String nombre; // Nombre del grupo (ej: "Grupo A")
+    private Long id;
+    private String nombre;
 
-    // Constructor vacío necesario para que Spring pueda usar esta clase
-    public GrupoDTO() {}
-
-    //Getters y Setters: permiten leer y escribir los datos
+    public CursoDTO() {}
 
     public Long getId() {
         return id;
@@ -26,5 +23,6 @@ public class GrupoDTO {
         this.nombre = nombre;
     }
 }
+
 
 

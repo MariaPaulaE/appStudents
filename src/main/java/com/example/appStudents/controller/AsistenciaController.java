@@ -19,67 +19,53 @@ public class AsistenciaController {
         this.asistenciaService = asistenciaService;
     }
 
-    //Crear nueva asistencia
+    // Crear una nueva asistencia
     @PostMapping
-    public ResponseEntity<AsistenciaDTO> addAsistencia(@RequestBody AsistenciaDTO dto) {
-        Asistencia asistencia = asistenciaService.saveAsistencia(dto);
-        AsistenciaDTO respuesta = convertToDTO(asistencia);
-        return ResponseEntity.ok(respuesta);
+    public ResponseEntity<AsistenciaDTO> crear(@RequestBody AsistenciaDTO dto) {
+        Asistencia nueva = asistenciaService.guardarAsistencia(dto);
+        return ResponseEntity.ok(convertToDTO(nueva));
     }
 
-    //Obtener todas las asistencias
+    // Listar todas las asistencias
     @GetMapping
-    public ResponseEntity<List<AsistenciaDTO>> getAllAsistencias() {
-        List<Asistencia> asistencias = asistenciaService.getAllAsistencias();
+    public ResponseEntity<List<AsistenciaDTO>> listar() {
+        List<Asistencia> lista = asistenciaService.obtenerTodas();
         List<AsistenciaDTO> dtos = new ArrayList<>();
 
-        for (Asistencia asistencia : asistencias) {
-            AsistenciaDTO dto = convertToDTO(asistencia);
-            dtos.add(dto);
+        for (Asistencia asistencia : lista) {
+            dtos.add(convertToDTO(asistencia));
         }
 
         return ResponseEntity.ok(dtos);
     }
 
-    //Obtener asistencia por ID
+    // Obtener una asistencia por su ID
     @GetMapping("/{id}")
-    public ResponseEntity<AsistenciaDTO> getAsistenciaById(@PathVariable Long id) {
-        Asistencia asistencia = asistenciaService.getAsistenciaById(id);
-
-        if (asistencia != null) {
-            AsistenciaDTO dto = convertToDTO(asistencia);
-            return ResponseEntity.ok(dto);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+    public ResponseEntity<AsistenciaDTO> obtenerPorId(@PathVariable Long id) {
+        Asistencia asistencia = asistenciaService.obtenerPorId(id);
+        return asistencia != null ? ResponseEntity.ok(convertToDTO(asistencia)) : ResponseEntity.notFound().build();
     }
 
-    //Actualizar asistencia
+    // Actualizar una asistencia existente
     @PutMapping("/{id}")
-    public ResponseEntity<AsistenciaDTO> updateAsistencia(@PathVariable Long id, @RequestBody AsistenciaDTO dto) {
-        Asistencia updated = asistenciaService.updateAsistencia(id, dto);
-
-        if (updated != null) {
-            AsistenciaDTO respuesta = convertToDTO(updated);
-            return ResponseEntity.ok(respuesta);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+    public ResponseEntity<AsistenciaDTO> actualizar(@PathVariable Long id, @RequestBody AsistenciaDTO dto) {
+        Asistencia actualizada = asistenciaService.actualizar(id, dto);
+        return actualizada != null ? ResponseEntity.ok(convertToDTO(actualizada)) : ResponseEntity.notFound().build();
     }
 
-    //Eliminar asistencia
+    // Eliminar una asistencia por su ID
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteAsistencia(@PathVariable Long id) {
-        asistenciaService.deleteAsistencia(id);
+    public ResponseEntity<Void> eliminar(@PathVariable Long id) {
+        asistenciaService.eliminar(id);
         return ResponseEntity.noContent().build();
     }
 
-    //Convertir Asistencia (entidad) a DTO
+    // Convertir entidad Asistencia a DTO
     private AsistenciaDTO convertToDTO(Asistencia asistencia) {
         AsistenciaDTO dto = new AsistenciaDTO();
         dto.setId(asistencia.getId());
         dto.setFecha(asistencia.getFecha());
-        dto.setPresente(asistencia.isPresente());
+        dto.setEstado(asistencia.getEstado());
 
         if (asistencia.getEstudiante() != null) {
             dto.setEstudianteId(asistencia.getEstudiante().getId());
@@ -92,6 +78,7 @@ public class AsistenciaController {
         return dto;
     }
 }
+
 
 
 

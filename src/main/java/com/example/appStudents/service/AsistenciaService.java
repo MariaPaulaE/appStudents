@@ -1,12 +1,12 @@
 package com.example.appStudents.service;
 
 import com.example.appStudents.dto.AsistenciaDTO;
-import com.example.appStudents.model.Asistencia;
-import com.example.appStudents.model.Estudiante;
 import com.example.appStudents.model.Asignatura;
-import com.example.appStudents.repository.AsistenciaRepository;
-import com.example.appStudents.repository.EstudianteRepository;
+import com.example.appStudents.model.Asistencia;
+import com.example.appStudents.model.Estudiantes;
 import com.example.appStudents.repository.AsignaturaRepository;
+import com.example.appStudents.repository.AsistenciaRepository;
+import com.example.appStudents.repository.EstudiantesRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,59 +15,73 @@ import java.util.List;
 public class AsistenciaService {
 
     private final AsistenciaRepository asistenciaRepository;
-    private final EstudianteRepository estudianteRepository;
+    private final EstudiantesRepository estudiantesRepository;
     private final AsignaturaRepository asignaturaRepository;
 
     public AsistenciaService(AsistenciaRepository asistenciaRepository,
-                             EstudianteRepository estudianteRepository,
+                             EstudiantesRepository estudiantesRepository,
                              AsignaturaRepository asignaturaRepository) {
         this.asistenciaRepository = asistenciaRepository;
-        this.estudianteRepository = estudianteRepository;
+        this.estudiantesRepository = estudiantesRepository;
         this.asignaturaRepository = asignaturaRepository;
     }
 
-    //Guardar o actualizar asistencia
-    public Asistencia saveAsistencia(AsistenciaDTO dto) {
+    // Guardar una nueva asistencia desde un DTO
+    public Asistencia guardarAsistencia(AsistenciaDTO dto) {
         Asistencia asistencia = new Asistencia();
+
         asistencia.setFecha(dto.getFecha());
-        asistencia.setPresente(dto.isPresente());
+        asistencia.setEstado(dto.getEstado());
 
-        Estudiante estudiante = estudianteRepository.findById(dto.getEstudianteId()).orElse(null);
-        asistencia.setEstudiante(estudiante);
+        if (dto.getEstudianteId() != null) {
+            Estudiantes estudiante = estudiantesRepository.findById(dto.getEstudianteId()).orElse(null);
+            asistencia.setEstudiante(estudiante);
+        }
 
-        Asignatura asignatura = asignaturaRepository.findById(dto.getAsignaturaId()).orElse(null);
-        asistencia.setAsignatura(asignatura);
+        if (dto.getAsignaturaId() != null) {
+            Asignatura asignatura = asignaturaRepository.findById(dto.getAsignaturaId()).orElse(null);
+            asistencia.setAsignatura(asignatura);
+        }
 
         return asistenciaRepository.save(asistencia);
     }
 
-    public Asistencia getAsistenciaById(Long id) {
-        return asistenciaRepository.findById(id).orElse(null);
-    }
-
-    public List<Asistencia> getAllAsistencias() {
+    // Obtener todas las asistencias
+    public List<Asistencia> obtenerTodas() {
         return asistenciaRepository.findAll();
     }
 
-    public Asistencia updateAsistencia(Long id, AsistenciaDTO dto) {
+    // Obtener asistencia por ID
+    public Asistencia obtenerPorId(Long id) {
+        return asistenciaRepository.findById(id).orElse(null);
+    }
+
+    // Actualizar una asistencia existente
+    public Asistencia actualizar(Long id, AsistenciaDTO dto) {
         return asistenciaRepository.findById(id).map(asistencia -> {
             asistencia.setFecha(dto.getFecha());
-            asistencia.setPresente(dto.isPresente());
+            asistencia.setEstado(dto.getEstado());
 
-            Estudiante estudiante = estudianteRepository.findById(dto.getEstudianteId()).orElse(null);
-            asistencia.setEstudiante(estudiante);
+            if (dto.getEstudianteId() != null) {
+                Estudiantes estudiante = estudiantesRepository.findById(dto.getEstudianteId()).orElse(null);
+                asistencia.setEstudiante(estudiante);
+            }
 
-            Asignatura asignatura = asignaturaRepository.findById(dto.getAsignaturaId()).orElse(null);
-            asistencia.setAsignatura(asignatura);
+            if (dto.getAsignaturaId() != null) {
+                Asignatura asignatura = asignaturaRepository.findById(dto.getAsignaturaId()).orElse(null);
+                asistencia.setAsignatura(asignatura);
+            }
 
             return asistenciaRepository.save(asistencia);
         }).orElse(null);
     }
 
-    public void deleteAsistencia(Long id) {
+    // Eliminar una asistencia por ID
+    public void eliminar(Long id) {
         asistenciaRepository.deleteById(id);
     }
 }
+
 
 
 
